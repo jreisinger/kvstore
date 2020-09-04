@@ -1,3 +1,4 @@
+// Package store implements the key/value store functionality.
 package store
 
 import (
@@ -8,8 +9,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Method of Handler
-func PutHandler(w http.ResponseWriter, r *http.Request) {
+// Handler represents an HTTP handler.
+type Handler struct{}
+
+// Put creates or updates an entry in the key/value store. It's idempotent.
+func (h Handler) Put(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
@@ -28,7 +32,8 @@ func PutHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func GetHandler(w http.ResponseWriter, r *http.Request) {
+// Get retrieves a value for a given key.
+func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
