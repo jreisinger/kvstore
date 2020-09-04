@@ -6,23 +6,23 @@ import (
 )
 
 var store = struct {
-	s sync.RWMutex
+	sync.RWMutex
 	m map[string]string
 }{m: make(map[string]string)}
 
 func Put(key string, value string) error {
-	store.s.Lock()
+	store.Lock()
 	store.m[key] = value
-	store.s.Unlock()
+	store.Unlock()
 	return nil
 }
 
 var ErrorNoSuchKey = errors.New("no such key")
 
 func Get(key string) (string, error) {
-	store.s.RLock()
+	store.RLock()
 	value, ok := store.m[key]
-	store.s.RUnlock()
+	store.RUnlock()
 	if !ok {
 		return "", ErrorNoSuchKey
 	}
