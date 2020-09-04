@@ -6,3 +6,15 @@ Endpoints:
 
 * PUT /v1/{key}
 * GET /v1/{key}
+
+Usage:
+
+```
+curl localhost:8000/v1/my-key-1 --request PUT --data 'my-value1'
+curl localhost:8000/v1/my-key-2 --request PUT --data 'my-value2'
+curl localhost:8000/v1/my-key-2 --request GET
+
+cat transaction.log
+1	2	my-key-1	my-value1
+2	2	my-key-2	my-value2
+```
