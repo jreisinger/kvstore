@@ -1,4 +1,4 @@
-package main
+package store
 
 import (
 	"errors"
@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Method of Handler
 func PutHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
