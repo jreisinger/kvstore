@@ -3,14 +3,48 @@ package store
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jreisinger/kvstore/transactions"
 )
 
 // Handler represents an HTTP handler.
-type Handler struct{}
+type Handler struct {
+	transact transactions.TransactionLogger
+}
+
+// NewHandler initializes transactions logger and returns a handler.
+func NewHandler() (Handler, error) {
+	var err error
+
+	transact, err := transactions.NewFileTransactionLogger("transaction.log")
+	if err != nil {
+		return Handler{}, fmt.Errorf("failed to create event logger: %w", err)
+	}
+
+	events, errors := transact.ReadEvents()
+	ok, e := true, transactions.Event{}
+
+	for ok && err == nil {
+		select {
+		case err, ok = <-errors:
+		case e, ok = <-events:
+			switch e.EventType {
+			case transactions.EventDelete:
+				err = Delete(e.Key)
+			case transactions.EventPut:
+				err = Put(e.Key, e.Value)
+			}
+		}
+	}
+
+	transact.Run()
+
+	return Handler{transact: transact}, err
+}
 
 // Put creates or updates an entry in the key/value store. It's idempotent.
 func (h Handler) Put(w http.ResponseWriter, r *http.Request) {
@@ -28,6 +62,8 @@ func (h Handler) Put(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	h.transact.WritePut(key, string(value))
 
 	w.WriteHeader(http.StatusCreated)
 }
