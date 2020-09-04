@@ -10,9 +10,9 @@ Endpoints:
 Usage:
 
 ```
-curl localhost:8000/v1/my-key-1 --request PUT --data 'my-value1'
-curl localhost:8000/v1/my-key-2 --request PUT --data 'my-value2'
-curl localhost:8000/v1/my-key-2 --request GET
+curl localhost:8000/v1/my-key-1 -XPUT -d 'my-value1'
+curl localhost:8000/v1/my-key-2 -XPUT -d 'my-value2'
+curl localhost:8000/v1/my-key-2
 
 cat transaction.log
 1	2	my-key-1	my-value1
