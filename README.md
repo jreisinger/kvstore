@@ -18,3 +18,5 @@ cat transaction.log
 1	2	my-key-1	my-value1
 2	2	my-key-2	my-value2
 ```
+
+See also Kelsey Hightower's [memkv](https://github.com/kelseyhightower/memkv).
