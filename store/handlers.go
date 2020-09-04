@@ -8,34 +8,34 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jreisinger/kvstore/transactions"
+	"github.com/jreisinger/kvstore/transaction"
 )
 
 // Handler represents an HTTP handler.
 type Handler struct {
-	transact transactions.TransactionLogger
+	transact transaction.Logger
 }
 
-// NewHandler initializes transactions logger and returns a handler.
+// NewHandler initializes transaction logger and returns a handler.
 func NewHandler() (Handler, error) {
 	var err error
 
-	transact, err := transactions.NewFileTransactionLogger("transaction.log")
+	transact, err := transaction.NewFileLogger("transaction.log")
 	if err != nil {
 		return Handler{}, fmt.Errorf("failed to create event logger: %w", err)
 	}
 
 	events, errors := transact.ReadEvents()
-	ok, e := true, transactions.Event{}
+	ok, e := true, transaction.Event{}
 
 	for ok && err == nil {
 		select {
 		case err, ok = <-errors:
 		case e, ok = <-events:
 			switch e.EventType {
-			case transactions.EventDelete:
+			case transaction.EventDelete:
 				err = Delete(e.Key)
-			case transactions.EventPut:
+			case transaction.EventPut:
 				err = Put(e.Key, e.Value)
 			}
 		}

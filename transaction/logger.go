@@ -1,10 +1,10 @@
-// Package transactions adds persistence to key/value store by logging the
+// Package transaction adds persistence to key/value store by logging the
 // trasactions.
-package transactions
+package transaction
 
-// TransactionLogger is the interface that groups methods for logging
-// transactions.
-type TransactionLogger interface {
+// Logger is the interface that groups methods for logging
+// transaction.
+type Logger interface {
 	WriteDelete(key string)
 	WritePut(key, value string)
 	Err() <-chan error

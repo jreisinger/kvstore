@@ -1,4 +1,4 @@
-package transactions
+package transaction
 
 import (
 	"bufio"
@@ -6,9 +6,9 @@ import (
 	"os"
 )
 
-// NewFileTransactionLogger creates a new TransactionLogger that writes
+// NewFileLogger creates a new TransactionLogger that writes
 // transaction log into a file.
-func NewFileTransactionLogger(filename string) (TransactionLogger, error) {
+func NewFileLogger(filename string) (Logger, error) {
 	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
 		return nil, fmt.Errorf("can't open transaction log file: %w", err)
