@@ -15,7 +15,7 @@ go build
 ./kvstore
 ```
 
-Build and run the service in Docker:
+Build and run the service using Docker:
 
 ```
 docker build -t kvstore .
