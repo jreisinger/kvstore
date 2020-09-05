@@ -34,9 +34,9 @@ func NewHandler() (Handler, error) {
 		case e, ok = <-events:
 			switch e.EventType {
 			case transaction.EventDelete:
-				err = Delete(e.Key)
+				err = del(e.Key)
 			case transaction.EventPut:
-				err = Put(e.Key, e.Value)
+				err = put(e.Key, e.Value)
 			}
 		}
 	}
@@ -57,7 +57,7 @@ func (h Handler) Put(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = Put(key, string(value))
+	err = put(key, string(value))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -73,7 +73,7 @@ func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	value, err := Get(key)
+	value, err := get(key)
 	if errors.Is(err, ErrorNoSuchKey) {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
