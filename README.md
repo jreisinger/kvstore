@@ -1,13 +1,26 @@
-Example of a cloud native application mostly taken from the [Cloud Native
-Go](https://learning.oreilly.com/library/view/cloud-native-go/9781492076322/)
-book. kvstore is a REST key/value store. It persists the (resource) state by
-writing transaction log into a file and then reading from it upon start.
+kvstore is a RESTful service that implements a key/value store. It persists
+the (resource) state by writing transaction log into a file and then reading
+from it upon start.
 
 Endpoints:
 
 * `PUT /v1/<key>`
 * `GET /v1/<key>`
 * `DELETE /v1/<key>`
+
+Build and run the service:
+
+```
+go build
+./kvstore
+```
+
+Build and run the service in Docker:
+
+```
+docker build -t kvstore .
+docker run -d -p 8000:8000 kvstore
+```
 
 Usage:
 
@@ -21,9 +34,12 @@ cat transaction.log
 2	2	my-key-2	my-value2
 ```
 
-See also Kelsey Hightower's [memkv](https://github.com/kelseyhightower/memkv).
+kvstore is an example of a cloud native application and it's mostly taken
+from the [Cloud Native
+Go](https://learning.oreilly.com/library/view/cloud-native-go/9781492076322/)
+book.
 
-The kvstore is a minimum viable product with these possible improvements:
+kvstore is a minimum viable product with these possible improvements:
 
 * There's no `Close` method to gracefully close the transactions file.
 * The application can close with events still in the write buffer: events can
