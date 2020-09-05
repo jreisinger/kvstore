@@ -5,8 +5,9 @@ transaction log into a file and then reading from it upon start.
 
 Endpoints:
 
-* PUT /v1/{key}
-* GET /v1/{key}
+* `PUT /v1/<key>`
+* `GET /v1/<key>`
+* `DELETE /v1/<key>`
 
 Usage:
 

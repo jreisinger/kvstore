@@ -84,3 +84,16 @@ func (h Handler) Get(w http.ResponseWriter, r *http.Request) {
 
 	w.Write([]byte(value))
 }
+
+// Del removes the entry at key.
+func (h Handler) Del(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	key := vars["key"]
+
+	if err := del(key); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	h.transact.WriteDelete(key)
+}

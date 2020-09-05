@@ -18,5 +18,6 @@ func main() {
 
 	r.HandleFunc("/v1/{key}", h.Put).Methods("PUT")
 	r.HandleFunc("/v1/{key}", h.Get).Methods("GET")
+	r.HandleFunc("/v1/{key}", h.Del).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
