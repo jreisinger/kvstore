@@ -22,3 +22,16 @@ cat transaction.log
 ```
 
 See also Kelsey Hightower's [memkv](https://github.com/kelseyhightower/memkv).
+
+The kvstore is a minimum viable product with these possible improvements:
+
+* There's no `Close` method to gracefully close the transactions file.
+* The application can close with events still in the write buffer: events can
+  get lost.
+* Keys and values aren't encoded in the transaction log: multiple lines or
+  whitespace will fail to parse correctly.
+* The sizes of keys and values are unbound: huge keys/values can be added,
+  filling the disk.
+* The transaction log is written in plain text: it will take up more space than
+  it probably needs to.
+* The log retains records of deleted values forever: it will grow indefinitely.
